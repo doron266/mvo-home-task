@@ -9,6 +9,9 @@
 crash.log
 crash.*.log
 
+# Pycharm metadat of the project
+.idea/
+
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf
