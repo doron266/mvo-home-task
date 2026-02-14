@@ -2,7 +2,7 @@
 
 This project is my moveo home task. I was asked to deploy a containerized website using nginx,
 
-over aws infrastructure using any preferred IAC.
+over aws infrastructure using any preferred IaC.
 
 Definition of done: searching for the instance in the browser will get us the web content,
 
@@ -27,6 +27,7 @@ the project involved 4 main concepts which I needed to take care for:
 - AWS
 - Docker
 - Nginx
+- git
 
 ---
 
@@ -45,11 +46,11 @@ the project involved 4 main concepts which I needed to take care for:
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/your-repo.git
-cd your-repo
+git clone https://github.com/doron266/mvo-home-task.git
+cd mvo-home-task
 terraform apply
 ```
-after executing terraform apply you will be requested for approval, after initialization completes the ALB's DNS will be output
+- after executing terraform apply you will be requested for approval, after initialization completes the ALB's DNS will be output
 ---
 ### Security concepts
 
