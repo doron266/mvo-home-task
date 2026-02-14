@@ -70,3 +70,26 @@ terraform apply
 - The variables.tf contains usefully variables with potential to be moduler and different; hardly recommended to replace the 'key_pair' variable and 'region' variable
 - I have noticed that some ec2 models aren't available in different regions, so pay attention to that thing also
 - The project was tested and built on eu-north-1 and t3.micro
+
+---
+
+## Module-based deployment
+
+A module-based version of the same infrastructure was added under `modules/` and wired from `main-modules.tf`.
+
+- `modules/network`: VPC, subnets, IGW, NAT gateways, routing
+- `modules/compute`: EC2 instances, AMI lookup, security group and rules
+- `modules/alb`: ALB, listener, target group, and attachments
+
+By default, the original root resources are still used.
+To also deploy the module-based stack, set:
+
+```hcl
+use_modules = true
+```
+
+inside `terraform.tfvars` (or pass `-var='use_modules=true'`).
+
+When enabled, the module ALB output is available as:
+
+- `module_alb_dns_name`
