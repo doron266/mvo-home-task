@@ -1,12 +1,12 @@
 resource "aws_security_group" "alb_security_group" {
   description = "Allow traffic for EC2 Webservers"
-  vpc_id      = aws_vpc.app_vpc.id
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_vpc_security_group_egress_rule" "alb_egress" {
   security_group_id = aws_security_group.alb_security_group.id
   cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
+  ip_protocol       = "-1"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "alb_http_ipv4" {
@@ -17,21 +17,19 @@ resource "aws_vpc_security_group_ingress_rule" "alb_http_ipv4" {
   to_port           = 80
 }
 
-resource "aws_lb" "aws-application_load_balancer" {
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_security_group.id]
-  subnets                    = aws_subnet.public_subnets[*].id
+resource "aws_lb" "application_load_balancer" {
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.alb_security_group.id]
+  subnets                    = var.public_subnet_ids
   enable_deletion_protection = false
 }
-################################################################################
-# create target group for ALB
-################################################################################
+
 resource "aws_lb_target_group" "alb_target_group" {
   target_type = "instance"
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.app_vpc.id
+  vpc_id      = var.vpc_id
 
   health_check {
     enabled             = true
@@ -48,11 +46,8 @@ resource "aws_lb_target_group" "alb_target_group" {
   }
 }
 
-################################################################################
-# create a listener on port 80 with redirect action
-################################################################################
 resource "aws_lb_listener" "alb_http_listener" {
-  load_balancer_arn = aws_lb.aws-application_load_balancer.id
+  load_balancer_arn = aws_lb.application_load_balancer.id
   port              = 80
   protocol          = "HTTP"
 
@@ -62,11 +57,8 @@ resource "aws_lb_listener" "alb_http_listener" {
   }
 }
 
-################################################################################
-# Target Group Attachment with Instance
-################################################################################
 resource "aws_alb_target_group_attachment" "tg_attachment" {
-  for_each = { for i, inst in aws_instance.deployment : i => inst.id }
+  for_each = var.target_instance_ids
 
   target_group_arn = aws_lb_target_group.alb_target_group.arn
   target_id        = each.value

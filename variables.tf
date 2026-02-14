@@ -53,3 +53,9 @@ variable "private_subnets_conf" {
   type = number
   default = 2
 }
+
+variable "use_modules" {
+  type        = bool
+  default     = true
+  description = "Set to true to deploy an additional module-based stack from main-modules.tf"
+}
