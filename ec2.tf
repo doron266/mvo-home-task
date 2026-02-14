@@ -4,7 +4,7 @@ data "aws_ami" "amazon_linux" {
 
   filter {
     name   = "name"
-    values = ["al2023-ami-*-kernel-*-x86_64"]
+    values = [var.ami_version]
   }
 }
 
@@ -46,11 +46,11 @@ resource "aws_security_group" "ec2_security_group" {
 #   }
 # }
 
-resource "aws_instance" "example" {
-  count = 2
+resource "aws_instance" "deployment" {
+  count = var.ec2_count
   ami                    = data.aws_ami.amazon_linux.id
-  key_name               = "dw"
-  instance_type          = "t3.micro"
+  key_name               = var.key_pair
+  instance_type          = var.instance_type
   associate_public_ip_address = "false"
   subnet_id = element(aws_subnet.private_subnets[*].id, count.index)
   vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
@@ -81,7 +81,7 @@ resource "aws_instance" "example" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "this" {
+resource "aws_vpc_security_group_ingress_rule" "ingress" {
   for_each = var.sg_ingress_rules
 
   security_group_id = aws_security_group.ec2_security_group.id

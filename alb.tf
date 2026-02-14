@@ -65,8 +65,8 @@ resource "aws_lb_listener" "alb_http_listener" {
 ################################################################################
 # Target Group Attachment with Instance
 ################################################################################
-resource "aws_alb_target_group_attachment" "tgattachment" {
-  for_each = { for i, inst in aws_instance.example : i => inst.id }
+resource "aws_alb_target_group_attachment" "tg_attachment" {
+  for_each = { for i, inst in aws_instance.deployment : i => inst.id }
 
   target_group_arn = aws_lb_target_group.alb_target_group.arn
   target_id        = each.value

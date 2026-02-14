@@ -1,8 +1,28 @@
 variable "instance_type" {
-  type        = string                     # The type of the variable, in this case a string
-  default     = "t2.micro"                 # Default value for the variable
-  description = "The type of EC2 instance" # Description of what this variable represents
+  type        = string
+  default     = "t3.micro"
+  description = "The type of EC2 instance"
 }
+
+variable "ec2_count" {
+  type = number
+  default = 2
+}
+
+variable "key_pair" {
+  type = string
+  default = "dw"
+}
+
+variable "ami_version" {
+  type = string
+  default = "al2023-ami-*-kernel-*-x86_64"
+}
+
+####################################
+# network infrastructure variables #
+####################################
+
 variable "region" {
   type = string
   default = "eu-north-1"
@@ -29,3 +49,7 @@ variable "sg_ingress_rules" {
   }))
 }
 
+variable "private_subnets_conf" {
+  type = number
+  default = 2
+}

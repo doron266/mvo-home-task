@@ -48,18 +48,25 @@ the project involved 4 main concepts which I needed to take care for:
 ```bash
 git clone https://github.com/doron266/mvo-home-task.git
 cd mvo-home-task
+terraform init
 terraform apply
 ```
-- after executing terraform apply you will be requested for approval, after initialization completes the ALB's DNS will be output
+- After executing terraform apply you will be requested for approval, after initialization completes the ALB's DNS will be output
 ---
 ### Security concepts
 
-- usage of security groups: well configured security groups only for the ports needed for the project 80 and 22 for advanced tasks in the future
-- deployment ec2's sits in private subnet(no public IP): isolation from the world wide web adds a liar of security to our sensitive components
-- no need for bastion host as its old method, but can easily add with a new resource to terraform file
+- Usage of security groups: well configured security groups only for the ports needed for the project 80 and 22 for advanced tasks in the future
+- Deployment ec2's sits in private subnet(no public IP): isolation from the world wide web adds a liar of security to our sensitive components
+- No need for bastion host as its old method, but can easily add with a new resource to terraform file
 ---
 ### High availability concepts
 
 - Standard of network infrastructure: inside our VPC 2 public subnets and 2 private subnets one from each sits in a different availability zone
 - Routing: private subnet traffic routed to NAT getaways and public subnets traffic straight to internet getaways
 - Usage of ALB(application load balancer): using ALB we are increasing our h-a and securely granting access to our private ec2 in the private subnets
+
+### Important notes
+
+- The variables.tf contains usefully variables with potential to be moduler and different; hardly recommended to replace the 'key_pair' variable and 'region' variable
+- I have noticed that some ec2 models aren't available in different regions, so pay attention to that thing also
+- The project was tested and built on eu-north-1 and t3.micro
