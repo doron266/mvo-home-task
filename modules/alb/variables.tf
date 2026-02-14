@@ -7,5 +7,5 @@ variable "public_subnet_ids" {
 }
 
 variable "target_instance_ids" {
-  type = list(string)
+  type = map(string)
 }

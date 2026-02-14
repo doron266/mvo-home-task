@@ -24,9 +24,13 @@ module "alb" {
   count  = var.use_modules ? 1 : 0
   source = "./modules/alb"
 
+
   vpc_id              = module.network[0].vpc_id
   public_subnet_ids   = module.network[0].public_subnet_ids
-  target_instance_ids = module.compute[0].instance_ids
+  target_instance_ids = {
+  for idx, id in module.compute[0].instance_ids :
+  idx => id
+  }
 }
 
 output "module_alb_dns_name" {
