@@ -12,11 +12,11 @@ Definition of done: searching for the instance in the browser will get us the we
 
 ## 📌 Overview
 
-the project involved 4 main concepts which i needed to take care for:
+the project involved 4 main concepts which I needed to take care for:
 
 - The full infrastructure and the website should be accessible and deployed by executing 'terraform apply'
 - The instance should be placed in a private subnet, which means services outside the VPC cant reach it due to luck of public IP
-- Security concepts that i will touch later
+- Security concepts that I will touch later
 - Basic infrastructure standards for high availability
 
 ---
@@ -36,7 +36,7 @@ the project involved 4 main concepts which i needed to take care for:
 
 
 - Terraform >= 1.x
-- Docker, any version from the past 2 years should be fine
+- Docker, not really because its auto installed on the deployment instances
 - AWS CLI ready and configured!!!
 - An AWS account
 - git
@@ -49,12 +49,13 @@ git clone https://github.com/your-org/your-repo.git
 cd your-repo
 terraform apply
 ```
+after executing terraform apply you will be requested for approval, after initialization completes the ALB's DNS will be output
 ---
 ### Security concepts
 
 - usage of security groups: well configured security groups only for the ports needed for the project 80 and 22 for advanced tasks in the future
 - deployment ec2's sits in private subnet(no public IP): isolation from the world wide web adds a liar of security to our sensitive components
-- no need for bastion host as it old method, but can easily added with a new resource to terraform file
+- no need for bastion host as its old method, but can easily add with a new resource to terraform file
 ---
 ### High availability concepts
 
