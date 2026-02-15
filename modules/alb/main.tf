@@ -1,3 +1,4 @@
+
 resource "aws_security_group" "alb_security_group" {
   description = "Allow traffic for EC2 Webservers"
   vpc_id      = var.vpc_id
